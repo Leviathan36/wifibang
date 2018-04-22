@@ -4,7 +4,7 @@
 ![LastUpdate](https://img.shields.io/badge/last%20update-2018%2F04%2F22-yellow.svg)
 
 
-<p align="center"><img src="https://" width="80%" height="auto"></p>
+<p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/cover_image.png" width="80%" height="auto"></p>
 
 ## About:
 wifibang is a set of security tools which performs the main kinds of wifi attacks.
@@ -23,8 +23,8 @@ Script is based on five items: (in order of importance)
 It is not easy insert long commands or several parameters on a mobile device, so the wifibang CLI was inspired from SET (social engineering toolkit) CLI: NOT cryptic parameters are required.  
 All you have to do is insert a number or type [y/n]:
     
-    <p align="center"><img src="https://" ></p>
-    <p align="center"><img src="https://" ></p>
+    <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/menu.png" ></p>
+    <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/ap_list.png" ></p>
         
 #### 2.exception management
 Exception management restore the initial situation when an error occurs. It avoid user to exit from script and restore the environment before try the attack again (ex: restore the NIC).
@@ -43,7 +43,7 @@ You could add additionaly modules which must be indipendent each other.
 
 Maybe the use cases diagram of progect will clarify the idea: (EVIL TWIN AP ATTACK AND SNIFFER ARE NOT YET IMPLEMENTED)
 
-<p align="center"><img src="https://" ></p>
+<p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/use_cases_diagram.jpg" ></p>
 
 **custom module**
 It's simply add new attack modules:
