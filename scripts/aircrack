@@ -1,0 +1,96 @@
+#!/bin/bash
+
+
+#wifibang    -    wifi attacks suite
+#Copyright © 2018 Leviathan36 
+
+# This file is part of wifibang.
+
+#	wifibang is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	(at your option) any later version.
+
+#	wifibang is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+
+#	You should have received a copy of the GNU General Public License
+#	along with wifibang.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+####################################################
+                       #AIRCRACK#
+####################################################
+
+handshake_directory="./handshakes"
+wordlist_directory="./wordlists"
+router_passwords="./router_passwords"
+
+clear
+echo #formatting op
+echo 'SELECT FILE TO HASH: [type 99 to exit]'
+while [[ "$hand_file" == '' ]]; do
+    echo    #formatting op
+    ls ./$handshake_directory | nl | more
+    echo    #formatting op
+    printf ">>> "
+    read choice
+
+    [[ "$choice" == '99' ]] && exit 0
+    
+    counter='1'
+    for file in `ls $handshake_directory`; do
+        if [[ "$choice" == "$counter" ]]
+           then hand_file=$file; break
+           else let counter++
+        fi
+    done
+    
+    [[ "$hand_file" == '' ]] && { clear; echo "PLEASE INSERT A VALID NUMBER:"; }
+done
+
+clear
+echo #formatting op
+echo 'SELECT WORDLIST: [type 99 to exit]'
+while [[ "$word_file" == '' ]]; do
+    echo    #formatting op
+    ls $wordlist_directory | nl | more
+    echo    #formatting op
+    printf ">>> "
+    read choice
+    
+    [[ "$choice" == '99' ]] && exit 0
+    
+    counter='1'
+    for file in `ls $wordlist_directory`; do
+        if [[ "$choice" == "$counter" ]]
+           then word_file=$file; break
+           else let counter++
+        fi
+    done
+    
+    [[ "$word_file" == '' ]] && { clear; echo "PLEASE INSERT A VALID NUMBER:"; }
+done
+
+#WEP CASE NOT TESTED
+clear
+echo    #formatting op
+echo "SELECT SEC PROTOCOL:"
+while [[ "$sec_prot" != '1' && "$sec_prot" != '2' ]]; do
+    echo    #formatting op
+    echo "1. WEP"
+    echo "2. WPA/WPA2"
+    echo    #formatting op
+    printf ">>> "
+    read sec_prot
+    [[ "$sec_prot" != '1' && "$sec_prot" != '2' ]] && { clear; echo "PLEASE INSERT A VALID NUMBER:"; }
+done
+
+#there's a dipendence between this file and "deauth_airodump" (I can't see another way to do it)
+aircrack-ng -a${sec_prot} -b ${hand_file:0:17} -w $wordlist_directory/$word_file -l $router_passwords/${hand_file:19} $handshake_directory/$hand_file 
+
+################# END AIRCRACK #####################
+

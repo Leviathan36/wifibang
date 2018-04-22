@@ -1,0 +1,84 @@
+#!/bin/bash
+
+
+#wifibang    -    wifi attacks suite
+#Copyright © 2018 Leviathan36 
+
+# This file is part of wifibang.
+
+#	wifibang is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	(at your option) any later version.
+
+#	wifibang is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+
+#	You should have received a copy of the GNU General Public License
+#	along with wifibang.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+####################################################
+                #CONNECT TO TARGET#
+####################################################
+
+ap_ssid=$1
+wifi_int=$2
+
+router_passwords="./router_passwords"
+
+clear
+echo
+echo 'SELECT PASSWORD FROM FILE? [y/n]'
+echo
+printf ">>> "
+read choice
+while [[ "$choice" != 'y' && "$choice" != 'n' ]]; do
+    echo
+    echo "INSERT VALID CHARACTER [y/n]:"
+    echo 
+    printf ">>> "
+    read choice
+done
+
+if [[ "$choice" == 'y' ]]
+    then clear
+         echo
+         echo "SELECT FILE: [type 99 to exit]"
+         while [[ "$password" == '' ]]; do
+            echo 
+            ls $router_passwords | nl | more
+            echo
+            printf ">>> "
+            read choice
+             
+            [[ "$choice" == '99' ]] && exit 1
+                     
+            counter='1'
+            for file in `ls $router_passwords`; do
+                if [[ "$choice" == "$counter" ]]
+                    then password=`cat $router_passwords/$file`; break
+                    else let counter++
+                fi
+            done
+            
+            [[ "$password" == '' ]] && { clear; echo "EMPTY FILE OR INVALID NUMBER. PLEASE TRY AGAIN:"; }
+         done
+    else clear
+         echo
+         echo "INSERT PASSWORD:"
+         echo
+         printf ">>> "
+         read password
+fi
+
+clear
+echo
+echo 'connecting to router ...'
+echo
+sudo nmcli d wifi connect $ap_ssid password $password ifname $wifi_int || { echo "ERROR: cannot connect to ap with $wifi_int interface"; exit 1; }
+
+################ END CONNECT TO TARGET #############

