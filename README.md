@@ -55,9 +55,9 @@ Maybe the use cases diagram of progect will clarify the idea: (EVIL TWIN AP ATTA
 
 It's simply add new attack modules:
 
-1.write them into external file
-2.create a new item in switch case
-3.make it executable (sudo chmod +x <module_name>)  
+1. write them into external file
+2. create a new item in switch case
+3. make it executable (sudo chmod +x <module_name>)  
 
 *Remember the policy of the main file and relative functions (see above)*
 
@@ -69,16 +69,16 @@ This provide a thin application, which not required the installation of tens pac
     
 ## Attacks:
 
-1.catch handshake and sniffing  (based on airodump-ng and aireplay-ng)
-2.process handshake     (based on aircrack-ng) (note)
-3.jammer    (based on aireplay-ng)
-4.router login form attack (based on THC-hydra)
-5.sniffing  (NOT YET IMPLEMENTED::airodump-ng or tcpdump)
-6.evil twin AP attack   (NOT YET IMPLEMENTED::hostapd)
-7.DNS spoofing  (NOT YET IMPLEMENTED::DNS spoof)
-8.clients port scanning (NOT YET IMPLEMENTED::NMAP)
-9.clients vulnerability assessment (NOT YET IMPLEMENTED::openVAS)
-10.clients exploitation (NOT YET IMPLEMENTED::metasploit)
+1. catch handshake and sniffing  (based on airodump-ng and aireplay-ng)
+2. process handshake     (based on aircrack-ng) (note)
+3. jammer    (based on aireplay-ng)
+4. router login form attack (based on THC-hydra)
+5. sniffing  (NOT YET IMPLEMENTED::airodump-ng or tcpdump)
+6. evil twin AP attack   (NOT YET IMPLEMENTED::hostapd)
+7. DNS spoofing  (NOT YET IMPLEMENTED::DNS spoof)
+8. clients port scanning (NOT YET IMPLEMENTED::NMAP)
+9. clients vulnerability assessment (NOT YET IMPLEMENTED::openVAS)
+10. clients exploitation (NOT YET IMPLEMENTED::metasploit)
     
 **note** *I prefer this one instead hashcat because it's already includes into aircrack-ng suite (5° point). I know hashcat it's faster, but this script wasn't done to process long wordlists (to do this there are GPUs). This script was done to process short wordlist on fly with mobile device.*
       
@@ -87,11 +87,13 @@ Use the setup script to make the scripts executable and insert them directory in
 *If you change directory place, remember to update the PATH.*
     
 ## Future releases:
+
 Next steps are:
-	1. code review
-	2. implementation of others attacks
-	3. implementation of function which check for drivers compatibility
-	4. monitor_mode function adjust
+
+1. code review
+2. implementation of others attacks
+3. implementation of function which check for drivers compatibility
+4. monitor_mode function adjust
 	
 ## Bugs to fix:
 
