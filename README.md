@@ -13,6 +13,7 @@ Its most important feature is the user-friendly CLI which encourages to use the 
 
 ## Philosophy:
 Script is based on five items: (in order of importance)
+
     1. minimal input 
     2. exception management 
     3. efficienty
