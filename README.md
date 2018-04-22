@@ -47,11 +47,12 @@ Maybe the use cases diagram of progect will clarify the idea: (EVIL TWIN AP ATTA
 <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/use_cases_diagram.jpg" ></p>
 
 **custom module**
+
 It's simply add new attack modules:
 
-	1.write them into external file
-	2.create a new item in switch case
-	3.make it executable (sudo chmod +x <module_name>)        
+1.write them into external file
+2.create a new item in switch case
+3.make it executable (sudo chmod +x <module_name>)        
 *Remember the policy of the main file and relative functions (see above)*
 
 #### 5.portability
