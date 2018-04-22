@@ -106,6 +106,7 @@ In many cases the script won't working for drivers incompatibility, but if you a
 **TEST ON:**
 	
 1. Samsung Galaxy S2 Plus NFC (Android Lollipop)
+
 *RESULT:* testing phase
 	
 ## Disclaimer:
