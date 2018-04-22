@@ -24,9 +24,9 @@ Script is based on five items: (in order of importance)
 It is not easy insert long commands or several parameters on a mobile device, so the wifibang CLI was inspired from SET (social engineering toolkit) CLI: NOT cryptic parameters are required.  
 All you have to do is insert a number or type [y/n]:
     
-<p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/menu.png" height="5cm" width="auto"></p>
+<p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/menu.png" height="50%" width="auto"></p>
     
-<p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/ap_list.png" height="5cm" width="auto"></p>
+<p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/ap_list.png" height="50%" width="auto"></p>
         
 #### 2.exception management
 Exception management restore the initial situation when an error occurs. It avoid user to exit from script and restore the environment before try the attack again (ex: restore the NIC).
@@ -103,10 +103,10 @@ Next steps are:
 It's very interesting try this script on android smartphone which use meefik's application (Linux Deploy) to emulate linux environment.
 In many cases the script won't working for drivers incompatibility, but if you are lucky, you will have a good weapon on your hands!
 
-	**TEST ON:**
+**TEST ON:**
 	
-	1. Samsung Galaxy S2 Plus NFC (Android Lollipop)
-		*RESULT:* testing phase
+1. Samsung Galaxy S2 Plus NFC (Android Lollipop)
+*RESULT:* testing phase
 	
 ## Disclaimer:
 **Using this software to crack wifi network is illegal.**
