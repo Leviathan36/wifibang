@@ -94,10 +94,29 @@ Next steps are:
 2. implementation of others attacks
 3. implementation of function which check for drivers compatibility
 4. monitor_mode function adjust
-	
+
+## Common Errors:
+
+Sometimes you could find this error:
+
+	read failed: Network is down
+	ioctl(SIOCSIWMODE) failed: Device or resource busy
+
+	ARP linktype is set to 1 (Ethernet) - expected ARPHRD_IEEE80211,
+	ARPHRD_IEEE80211_FULL or ARPHRD_IEEE80211_PRISM instead.  Make
+	sure RFMON is enabled: run 'airmon-ng start <interface> <#>'
+	Sysfs injection support was not found either.
+
+	Can't reopen <interface>
+
+
+It's probabibly due to wifi-card which is connected to an AP so network manager conflict with aircrack-ng-suite tools (aireplay-ng, airodump-ng) because they use the same interface.
+The error disappear if you disconnect to hotspot and try again.
+Maybe I will add a control to force disconnect before try to use network manager (nmcli).
+
 ## Bugs to fix:
 
-1. Hydra function not work (wrong command parameters)
+<a href="https://github.com/Leviathan36/wifibang/blob/master/BUGS_TO_FIX.md">here</a>
 
 ## Smartphone experiment:
 It's very interesting try this script on android smartphone which use meefik's application (Linux Deploy) to emulate linux environment.
