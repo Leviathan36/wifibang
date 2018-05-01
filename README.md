@@ -12,7 +12,7 @@ Its most important feature is the user-friendly CLI which encourages users to us
 
 
 ## Philosophy:
-Script is based on five items: (in order of importance)
+Script is based on five concepts: (in order of importance)
 
 1. minimal input 
 2. exception management 
