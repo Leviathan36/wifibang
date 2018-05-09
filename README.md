@@ -29,7 +29,7 @@ All you have to do is insert a number or type [y/n]:
 <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/ap_list.png" height="300" width="auto"></p>
         
 #### 2.exception management
-Exception management restores the initial situation when an error occurs. It avoids the user to exit the script and restoring the environment before trying the attack again (ex: restore the NIC).
+Exception management restores the initial situation when an error occurs. It avoids the user to exit the script and restore the environment before trying the attack again (ex: restore the NIC).
 
 #### 3.efficiency
 The script must be fast. Complex (and slow) function should be rewritten. (Occam's razor)
@@ -79,7 +79,7 @@ This provides a thin application, which does not require the installation of ten
 9. clients vulnerability assessment (NOT YET IMPLEMENTED::openVAS)
 10. clients exploitation (NOT YET IMPLEMENTED::metasploit)
     
-**note** *I prefer this one instead hashcat because its already included into aircrack-ng suite (5° point). I know hashcat it's faster, but this script isn't supposed to process long wordlists (there are GPUs for this task). This script was created to process short wordlists on the fly with mobile devices.*
+**note** *I prefer this one instead hashcat because it's already included into aircrack-ng suite (5° point). I know hashcat it's faster, but this script isn't supposed to process long wordlists (there are GPUs for this task). This script was created to process short wordlists on the fly with mobile devices.*
       
 ## Installation:
 Use the setup script to make the scripts executable and insert their directory into the PATH variable.
