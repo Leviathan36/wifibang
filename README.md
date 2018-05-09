@@ -21,7 +21,7 @@ Script is based on five concepts: (in order of importance)
 5. portability
     
 #### 1.minimal input
-It is not convenient insert long commands or several parameters on a mobile device, so the wifibang CLI was inspired from SET (social engineering toolkit) CLI: NO cryptic parameters are required.  
+It is not convenient to insert long commands or several parameters on a mobile device, so the wifibang CLI was inspired from SET (social engineering toolkit) CLI: NO cryptic parameters are required.  
 All you have to do is insert a number or type [y/n]:
     
 <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/menu.png" height="300" width="auto"></p>
