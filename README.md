@@ -12,7 +12,7 @@ Its most important feature is the user-friendly CLI which encourages users to us
 
 
 ## Philosophy:
-Script is based on five concepts: (in order of importance)
+Script is based on five items: (in order of importance)
 
 1. minimal input 
 2. exception management 
@@ -21,7 +21,7 @@ Script is based on five concepts: (in order of importance)
 5. portability
     
 #### 1.minimal input
-It is not convenient to insert long commands or several parameters on a mobile device, so the wifibang CLI was inspired from SET (social engineering toolkit) CLI: NO cryptic parameters are required.  
+It is not easy to insert long commands or several parameters on a mobile device, so the wifibang CLI was inspired from SET (social engineering toolkit) CLI: NO cryptic parameters are required.  
 All you have to do is insert a number or type [y/n]:
     
 <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/Screenshots/menu.png" height="300" width="auto"></p>
@@ -36,7 +36,7 @@ The script must be fast. Complex (and slow) function should be rewritten. (Occam
 
 #### 4.modularity
 Bash wasn't designed for big modular applications. The most important problem with Bash is the absence of a complete return function that returns a string. This prevents the creation of complete modular application because it's complex, and not elegant, to pass arguments (strings) between functions with more than one "echo".
-My solution is a main script file where I put the functions which must communicate with each other, while in external files I put the indipendent functions which do not return anything (apart from the exit status). 
+My solution is a main script file where I put the functions which must communicate between each other, while in external files I put the indipendent functions which do not return anything (apart from the exit status). 
 The external scripts are called from main, with relative parameters.
 
 You could add additional modules which must be indipendent from each other.
