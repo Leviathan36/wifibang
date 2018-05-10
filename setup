@@ -29,14 +29,14 @@
 sudo chmod +x ./scripts/*
 
 #add folders
-[[ -d ./scripts/handshakes ]] || mkdir ./scripts/handshakes
-[[ -d ./scripts/wordlists ]] || mkdir ./scripts/wordlists
-[[ -d ./scripts/router_passwords ]] || mkdir ./scripts/router_passwords
-[[ -d ./scripts/user_hydra ]] || mkdir ./scripts/user_hydra
+mkdir -p ./scripts/handshakes
+mkdir -p ./scripts/wordlists
+mkdir -p ./scripts/router_passwords
+mkdir -p ./scripts/user_hydra
 
 
-!!!!!!!!!!!!!!!!!!!!!!! IF DIRECTORY NAME CONTAINS SPACES IT RETURN ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!! IF DIRECTORY NAME CONTAINS SPACES IT RETURNS AN ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #add PATH
 echo 'if directory name contains spaces the script could not work'
