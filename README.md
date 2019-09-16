@@ -135,7 +135,7 @@ In many cases the script won't work for drivers incompatibility, but if you are 
 **wifibang is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.**
 
 ## License:
-wifi-bang is released under GPLv3 license. See [LICENSE](LICENSE) for more details.
+wifibang is released under GPLv3 license. See [LICENSE](LICENSE) for more details.
 
 ## Credits:
 The script is based from an idea by Leviathan36.
