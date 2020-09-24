@@ -7,9 +7,7 @@
 <p align="center"><img src="https://github.com/Leviathan36/wifibang/blob/master/wifibang%20images/cover_image.png" width="80%" height="auto"></p>
 
 ## About:
-wifibang is a set of security tools which perform the main kinds of wifi attacks.
-Its most important feature is the user-friendly CLI which encourages users to use the script on mobile devices (like a smartphone, maybe associated with a raspberry).
-
+Wifibang is a set of security tools that performs the main kinds of wifi attacks. Its most important feature is the user-friendly CLI that allows users to use the script on mobile devices, for example a smartphone connected to a Raspberry.
 
 ## Philosophy:
 Script is based on five items: (in order of importance)
